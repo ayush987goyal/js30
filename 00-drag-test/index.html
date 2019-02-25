@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .drag-area {
+        height: 400px;
+        width: 400px;
+        border: 2px dashed black;
+      }
+
+      .highlight {
+        border: 2px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="drag-area"></div>
+    <img src="" id="image" />
+    <script>
+      const dragArea = document.querySelector('.drag-area');
+      const image = document.querySelector('#image');
+
+      function onDragEnter() {
+        dragArea.classList.add('dragged');
+        dragArea.classList.remove('undragged');
+      }
+
+      function onDragLeave() {
+        dragArea.classList.remove('dragged');
+        dragArea.classList.add('undragged');
+      }
+
+      function onDragOver(event) {
+        event.preventDefault();
+      }
+
+      function onDrop(event) {
+        event.preventDefault();
+        console.log(event.dataTransfer.files);
+        const reader = new FileReader();
+        reader.readAsDataURL(event.dataTransfer.files[0]);
+        reader.onloadend = () => {
+          image.src = reader.result;
+        };
+      }
+
+      dragArea.addEventListener('dragenter', onDragEnter);
+      dragArea.addEventListener('dragleave', onDragLeave);
+      dragArea.addEventListener('dragover', onDragOver);
+      dragArea.addEventListener('drop', onDrop);
+    </script>
+  </body>
+</html>
